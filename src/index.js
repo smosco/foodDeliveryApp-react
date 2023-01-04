@@ -3,11 +3,12 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Feed from "./pages/Feed";
-import ProductDetail from "./pages/ProductDetail";
-import MyCart from "./pages/MyCart";
+import MainContainer from "./pages/MainContainer";
 import NotFound from "./pages/NotFound";
-import CreateItem from "./pages/CreateItem";
+import { StateProvider } from "./context/StateProvider";
+import { initialState } from "./context/initialState";
+import reducer from "./context/reducer";
+import CreateContainer from "./pages/CreateContainer";
 
 const router = createBrowserRouter([
   {
@@ -15,18 +16,10 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
-      { index: true, element: <Feed /> },
+      { index: true, element: <MainContainer /> },
       {
         path: "/createItem",
-        element: <CreateItem />,
-      },
-      {
-        path: "/mycart/:userId",
-        element: <MyCart />,
-      },
-      {
-        path: "/product/:productId",
-        element: <ProductDetail />,
+        element: <CreateContainer />,
       },
     ],
   },
@@ -35,6 +28,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <StateProvider initialState={initialState} reducer={reducer}>
+      <RouterProvider router={router} />
+    </StateProvider>
   </React.StrictMode>
 );
